@@ -1,1 +1,0 @@
-variable-components-spec.md
