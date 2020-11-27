@@ -269,6 +269,7 @@ Component:
   - The number of axes that have a VarIdx
   - The number of transformation fields, if bit 4 of “flags” is set
 - The format of the VarIdx entries is determined by the “varIdxFormat” field
+(TODO: describe how)
 
 Component flags:
 
