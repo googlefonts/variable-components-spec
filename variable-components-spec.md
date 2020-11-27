@@ -247,55 +247,47 @@ components. The number of components is derived from the ‘glyf’ table.
 
 Component:
 
-- uint16: flags, see below
-- uint8 or uint16: numAxes
-  - This is a uint16 if bit 3 of “flags” is set, else a uint8
-- uint8 or uint16: axisIndices[numAxes]
-  - This is a uint16 if bit 3 of “flags” is set, else a uint8
-  - The most significant bit of each axisIndex tells whether this axis has a
-  VarIdx in the VarIdxs array below. Bits 0..6 (uint8) or 0..14 (uint16) form
-  the axis index.
-- Coord16: axisValues[numAxes]
-  - The axis value for each axis
-- Angle16: Rotation
-  - Optional, only present if it 5 of “flags” is set
-- Scale16: ScaleX
-  - Optional, only present if it 6 of “flags” is set
-- Scale16: ScaleY
-  - Optional, only present if it 7 of “flags” is set
-- Angle16: SkewX
-  - Optional, only present if it 8 of “flags” is set
-- Angle16: SkewY
-  - Optional, only present if it 9 of “flags” is set
-- Int16: TCenterX
-  - Optional, only present if it 10 of “flags” is set
-- int16:  TCenterY
-  - Optional, only present if it 11 of “flags” is set
-- uint8: varIdxFormat
-- VarIdx: VarIdxs[varIdxCount]
-  - Each VarIdx value represents an index into the VarStore, which contains all
-    variation data.
-  - varIdxCount is determined by the sum of:
-    - The number of axes that have a VarIdx
-    - The number of transformation fields, if bit 4 of “flags” is set
-  - The format of the VarIdx entries is determined by the “varIdxFormat” field
+| type | name | notes |
+|-|-|-|
+| uint16 | flags | see below |
+| uint8 or uint16 | numAxes | This is a uint16 if bit 3 of “flags” is set, else a uint8 |
+| uint8 or uint16 | axisIndices[numAxes] | This is a uint16 if bit 3 of “flags” is set, else a uint8<br/>The most significant bit of each axisIndex tells whether this axis has a VarIdx in the VarIdxs array below. Bits 0..6 (uint8) or 0..14 (uint16) form the axis index. |
+| Coord16 | axisValues[numAxes] | The axis value for each axis |
+| Angle16 | Rotation | Optional, only present if it 5 of “flags” is set |
+| Scale16 | ScaleX | Optional, only present if it 6 of “flags” is set |
+| Scale16 | ScaleY | Optional, only present if it 7 of “flags” is set |
+| Angle16 | SkewX | Optional, only present if it 8 of “flags” is set |
+| Angle16 | SkewY | Optional, only present if it 9 of “flags” is set |
+| Int16 | TCenterX | Optional, only present if it 10 of “flags” is set |
+| int16 |  TCenterY | Optional, only present if it 11 of “flags” is set |
+| uint8 | varIdxFormat |
+| VarIdx | VarIdxs[varIdxCount] | see below |
+
+- Each VarIdx value represents an index into the VarStore, which contains all
+  variation data.
+- varIdxCount is determined by the sum of:
+  - The number of axes that have a VarIdx
+  - The number of transformation fields, if bit 4 of “flags” is set
+- The format of the VarIdx entries is determined by the “varIdxFormat” field
 
 Component flags:
 
-- bit 0..2: Number of integer bits for ScaleX and ScaleY, mask: 0x07
-- bit 3: axis indices are shorts (clear = bytes, set = shorts)
-- bit 4: Transformation fields have VarIdx
-- bit 5: have Rotation
-- bit 6: have ScaleX
-- bit 7: have ScaleY
-- bit 8: have SkewX
-- bit 9: have SkewY
-- bit 10: have TCenterX
-- bit 11: have TCenterY
-- bit 12: If ScaleY is missing: take value from ScaleX (? to be detailed)
-- bit 13: (reserved, set to 0)
-- bit 14: (reserved, set to 0)
-- bit 15: (reserved, set to 0)
+| bit number | meaning |
+|-|-|
+| bit 0..2 | Number of integer bits for ScaleX and ScaleY, mask: 0x07 |
+| bit 3 | axis indices are shorts (clear = bytes, set = shorts) |
+| bit 4 | Transformation fields have VarIdx |
+| bit 5 | have Rotation |
+| bit 6 | have ScaleX |
+| bit 7 | have ScaleY |
+| bit 8 | have SkewX |
+| bit 9 | have SkewY |
+| bit 10 | have TCenterX |
+| bit 11 | have TCenterY |
+| bit 12 | If ScaleY is missing: take value from ScaleX (? to be detailed) |
+| bit 13 | (reserved, set to 0) |
+| bit 14 | (reserved, set to 0) |
+| bit 15 | (reserved, set to 0) |
 
 Angle16: this is an int16 value used to represent an angle between -360 and +360
 degrees. It’s neither radians nor degrees, but uses 16 bits of precision for 720
