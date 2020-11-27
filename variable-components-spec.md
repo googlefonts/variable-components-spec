@@ -19,23 +19,45 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
 
 ## What are Variable Components?
 
-TrueType has had the capability to form composite glyphs since its inception. A composite glyph references other glyphs as “components”. This is a simple way to save data storage, for glyphs that can be composed of other glyphs, such as diacritics. Components can be arbitrarily positioned in the composite glyph, and can be scaled and rotated and skewed if needed.
+TrueType has had the capability to form composite glyphs since its inception. A
+composite glyph references other glyphs as “components”. This is a simple way to
+save data storage, for glyphs that can be composed of other glyphs, such as
+diacritics. Components can be arbitrarily positioned in the composite glyph, and
+can be scaled and rotated and skewed if needed.
 
-“Variable Components”, as described in this document, add further parameters to customize their appearance in the composite glyph.
+“Variable Components”, as described in this document, add further parameters to
+“customize their appearance in the composite glyph.
 
-With OpenType 1.8, “variations” were added to the format, allowing for live interpolation between (say) Regular and Bold. These variations are global to the font: they are controlled by the user for the font as a whole. Such a font is no longer static, and the end user can navigate a design space along dimensions (axes) defined by the font. The chosen variation is called the design space location, as a set of coordinates in the design space.
+With OpenType 1.8, “variations” were added to the format, allowing for live
+interpolation between (say) Regular and Bold. These variations are global to the
+font: they are controlled by the user for the font as a whole. Such a font is no
+longer static, and the end user can navigate a design space along dimensions
+(axes) defined by the font. The chosen variation is called the design space
+location, as a set of coordinates in the design space.
 
-“Variable Components” add the possibility to place a variable glyph in a composite glyph, specifying the interpolation settings (the design space location) for that single occurrence. A single glyph may define its own design space, for composites to use as they see fit.
+“Variable Components” add the possibility to place a variable glyph in a
+“composite glyph, specifying the interpolation settings (the design space
+“location) for that single occurrence. A single glyph may define its own design
+“space, for composites to use as they see fit.
 
 ## Use cases
 
-Some design tools already implement a methodology like Variable Components (for example “Smart Components” in Glyphs.app). Users find it often a more efficient way to design certain glyphs. Upon export as TTF, such components have to be converted to traditional outlines.
+Some design tools already implement a methodology like Variable Components (for
+example “Smart Components” in Glyphs.app). Users find it often a more efficient
+way to design certain glyphs. Upon export as TTF, such components have to be
+converted to traditional outlines.
 
-However, a lot of space could be saved if the Variable Component information would be stored in the font, instead of traditional outlines: a component reference will typically take up less space than a discrete outline.
+However, a lot of space could be saved if the Variable Component information
+would be stored in the font, instead of traditional outlines: a component
+reference will typically take up less space than a discrete outline.
 
-This is especially true for CJK fonts, which tend to contain very large numbers of glyphs, many of which can be composed of variations of more basic glyphs.
+This is especially true for CJK fonts, which tend to contain very large numbers
+of glyphs, many of which can be composed of variations of more basic glyphs.
 
-More generally, fonts often contain glyphs that can be seen as variations of regular glyphs, for example superior and inferior numerals and small caps. It can be beneficial to represent these variations as local instances using Variable Components.
+More generally, fonts often contain glyphs that can be seen as variations of
+regular glyphs, for example superior and inferior numerals and small caps. It
+can be beneficial to represent these variations as local instances using
+Variable Components.
 
 ## Proposal overview
 
@@ -51,44 +73,85 @@ The proposal presented here was informed by the following priorities:
 - Make it easy for existing implementations to adapt
 - Store the Variable Component data in a compact form, to maximize space saving
 
-The first thing we need to pin down is how to do “local design spaces”. How does a glyph define its own designspace, to be used by composites?
+The first thing we need to pin down is how to do “local design spaces”. How does
+a glyph define its own designspace, to be used by composites?
 
 Here are some of the insights that led to the current design, in order:
 
-1. The composite is in full control of the design space location of the component
-1. The global design space location can affect the composite glyph, but it does not need to affect the design space location of the base glyph directly.
-1. A “base glyph” is just a regular ‘glyf’-based glyph, using ‘gvar’ for variations, but it needs to be able to use axes that are not user-controllable.
-1. We can use ‘fvar’ axes, but we need to be able to flag an axis as “This axis is for variable component use only, do not expose it to the user, ever, at all”. This is one step further than the existing “hidden” axis flag.
-1. The total number of axes that can be used by a font (as specified in the ‘fvar’ table) does not have an unreasonable limit (65536) per se, but it is not without cost: in some places – for example in ‘gvar’ variation tuples or VarStore regions – there is a value specified for every single axis in the font, even if that axis does not participate in a certain variation. This is especially relevant for ‘gvar’, as there can be many tuple variations (many glyphs × many variations per glyph), so adding even a single axis to a font can have a significant impact on the file size. So: let’s not use more axes than strictly necessary.
-1. A Variable Component axis is not exposed to the user, and there is no need for “user coordinates”: the composite will only ever use “normalized coordinates” to specify a design space location.
-1. A Variable Component axis is internally always referenced by its axis index. The “axis tag” is completely irrelevant. (Axis tags are only used for user interaction, and are not referenced anywhere in the font outside of the ‘fvar’ table.)
-1. The previous points lead to the conclusion that a single axis can be (re)used for different purposes by different base glyphs. The axis identity is no longer attached to a function that is meaningful for the end user, or any specific meaning at all. For example, base glyph X may use axis #2 to implement “stretching”, but base glyph Y may use the same axis #2 to implement “bending”. The meaning of an axis is completely local to the base glyph. Each component specifies the local design space location for its base glyph.
-1. Concluding, the local design space for a base glyph does not need any more information than what we already have: it is completely defined by its variations’ locations in the ‘gvar’ table.
+1. The composite is in full control of the design space location of the
+component
+1. The global design space location can affect the composite glyph, but it does
+not need to affect the design space location of the base glyph directly. 1. A
+“base glyph” is just a regular ‘glyf’-based glyph, using ‘gvar’ for variations,
+but it needs to be able to use axes that are not user-controllable.
+1. We can use ‘fvar’ axes, but we need to be able to flag an axis as “This axis
+is for variable component use only, do not expose it to the user, ever, at all”.
+This is one step further than the existing “hidden” axis flag.
+1. The total number of axes that can be used by a font (as specified in the
+‘fvar’ table) does not have an unreasonable limit (65536) per se, but it is not
+without cost: in some places – for example in ‘gvar’ variation tuples or
+VarStore regions – there is a value specified for every single axis in the font,
+even if that axis does not participate in a certain variation. This is
+especially relevant for ‘gvar’, as there can be many tuple variations (many
+glyphs × many variations per glyph), so adding even a single axis to a font can
+have a significant impact on the file size. So: let’s not use more axes than
+strictly necessary.
+1. A Variable Component axis is not exposed to the user, and there is no need
+for “user coordinates”: the composite will only ever use “normalized
+coordinates” to specify a design space location.
+1. A Variable Component axis is internally always referenced by its axis index.
+The “axis tag” is completely irrelevant. (Axis tags are only used for user
+interaction, and are not referenced anywhere in the font outside of the ‘fvar’
+table.)
+1. The previous points lead to the conclusion that a single axis can be (re)used
+for different purposes by different base glyphs. The axis identity is no longer
+attached to a function that is meaningful for the end user, or any specific
+meaning at all. For example, base glyph X may use axis #2 to implement
+“stretching”, but base glyph Y may use the same axis #2 to implement “bending”.
+The meaning of an axis is completely local to the base glyph. Each component
+specifies the local design space location for its base glyph.
+1. Concluding, the local design space for a base glyph does not need any more
+information than what we already have: it is completely defined by its
+variations’ locations in the ‘gvar’ table.
 
-To make Variable Components work, the only big thing that is missing from OpenType 1.8 is the capability to store some additional information for each component of composite glyphs. The core of this proposal is to add a single new table, called ‘VarC’, that will provide a space for all new information.
+To make Variable Components work, the only big thing that is missing from
+OpenType 1.8 is the capability to store some additional information for each
+component of composite glyphs. The core of this proposal is to add a single new
+table, called ‘VarC’, that will provide a space for all new information.
 
 A Variable Component reference needs the following information:
 
 - The base glyph ID. This specifies which glyph we are referencing.
 - A transformation (offset, scale, rotation, etc.)
 - A design space location
-- Variations for the transformation and the design space location, so the composite itself can become a variable glyph (whether as a “normal” glyph, or referenced as a Variable Component by another glyph)
+- Variations for the transformation and the design space location, so the
+- composite itself can become a variable glyph (whether as a “normal” glyph, or
+- referenced as a Variable Component by another glyph)
 
-We use the composites/components mechanism from the ‘glyf’ table, so some of these values are already taken care of: the base glyph ID and the offset. 
+We use the composites/components mechanism from the ‘glyf’ table, so some of
+these values are already taken care of: the base glyph ID and the offset. 
 
-Components in the ‘glyf’ table can optionally specify a scale value, or x/y scale values, or a 2×2 transformation matrix, but we chose not to use these for several reasons:
+Components in the ‘glyf’ table can optionally specify a scale value, or x/y
+scale values, or a 2×2 transformation matrix, but we chose not to use these for
+several reasons:
 
-- Scale factors (and matrix values) are Fixed2Dot14, meaning they are limited to the range -2.0..+2.0, which is a problem for some use cases.
-- ‘gvar’ only supports interpolation of the component offset values, not of the scale values or the matrix.
-- To interpolate 2×2 transformation matrices in a useful way is non-obvious and non-trivial, even when decomposing into scale, rotations and skew values.
+- Scale factors (and matrix values) are Fixed2Dot14, meaning they are limited to
+the range -2.0..+2.0, which is a problem for some use cases.
+- ‘gvar’ only supports interpolation of the component offset values, not of the
+- ‘scale values or the matrix.
+- To interpolate 2×2 transformation matrices in a useful way is non-obvious and
+- non-trivial, even when decomposing into scale, rotations and skew values.
 
 Summarizing:
 
-- For the base glyph ID, the component offset and its variations, we rely on ‘glyf’ + ‘gvar’
-- Additional transformation values (scale, rotation, etc.) and its variations will be stored in ‘VarC’
-- The component design space location and its variations will also be stored in ‘VarC’
+- For the base glyph ID, the component offset and its variations, we rely on
+‘glyf’ + ‘gvar’ Additional transformation values (scale, rotation, etc.) and
+- its variations will be stored in ‘VarC’
+- The component design space location and its variations will also be stored in
+‘VarC’
 
-Base glyphs are totally ordinary ‘glyf’ + ‘gvar’ glyphs, but can also be composites themselves, using Variable Components.
+Base glyphs are totally ordinary ‘glyf’ + ‘gvar’ glyphs, but can also be
+composites themselves, using Variable Components.
 
 ## Format overview
 
@@ -99,13 +162,17 @@ Base glyphs are totally ordinary ‘glyf’ + ‘gvar’ glyphs, but can also be
 - GlyphData[numGlyphs]
 - VarStore
 
-The core of the format is the Component. For ‘VarC’, a glyph is an array of components.
+The core of the format is the Component. For ‘VarC’, a glyph is an array of
+components.
 
-‘VarC’ depends highly on ‘glyf’: for example, the number of components in a glyph is needed to parse a ‘VarC’ glyph, but that number can only be found in the ‘glyf’ table.
+‘VarC’ depends highly on ‘glyf’: for example, the number of components in a
+‘glyph is needed to parse a ‘VarC’ glyph, but that number can only be found in
+‘the ‘glyf’ table.
 
 The data for a component is stored as part of the glyph data.
 
-The transformation data is stored as individual optional fields which can be used to construct a transformation matrix.
+The transformation data is stored as individual optional fields which can be
+used to construct a transformation matrix.
 
 Transformation fields:
 
@@ -117,9 +184,11 @@ Transformation fields:
 - TCenterX (default = 0)
 - TCenterY (default = 0)
 
-The TCenterX and TCenterY values represent the “center of transformation”. This is separate from the component offset as stored in the ‘glyf’ table.
+The TCenterX and TCenterY values represent the “center of transformation”. This
+is separate from the component offset as stored in the ‘glyf’ table.
 
-Details of how to build a transformation matrix, as pseudo-Python/fontTools code, where (X, Y) is the component offset:
+Details of how to build a transformation matrix, as pseudo-Python/fontTools
+code, where (X, Y) is the component offset:
 
     # Using fontTools.misc.transform.Transform
     t = Transform()  # Identity
@@ -129,19 +198,30 @@ Details of how to build a transformation matrix, as pseudo-Python/fontTools code
     t = t.skew(SkewX, SkewY)
     t = t.translate(-TCenterX, -TCenterX)
 
-The transformation fields are stored as individual fields, and are interpolated as individual fields. If the client needs a transformation matrix, then this matrix needs to be constructed after interpolation.
+The transformation fields are stored as individual fields, and are interpolated
+as individual fields. If the client needs a transformation matrix, then this
+matrix needs to be constructed after interpolation.
 
 Rationale for using a transformation center, using Rotation as an example:
 
 - Rotation by default happens around the origin of the component
-- For some cases this may be good enough, as the base glyph can be designed this way
-- However, in other cases components may need to determine the rotation center locally, depending on how the component is used. Imagine a base glyph that represents a horizontal bar. In one glyph, this bar should be rotated using the left side as the center, and in another, it should be rotated using the right side as the center.
-- This all wouldn’t make a difference if it wasn’t for interpolation: it’s really about how the component moves when transitioning from one composite master to another.
+- For some cases this may be good enough, as the base glyph can be designed
+this way
+- However, in other cases components may need to determine the rotation center
+locally, depending on how the component is used. Imagine a base glyph that
+represents a horizontal bar. In one glyph, this bar should be rotated using the
+left side as the center, and in another, it should be rotated using the right
+side as the center.
+- This all wouldn’t make a difference if it wasn’t for interpolation: it’s
+really about how the component moves when transitioning from one composite
+master to another.
 - (This should be illustrated visually.)
 
-The design space location for components is stored as an array of axis indices and a matching array of axis values.
+The design space location for components is stored as an array of axis indices
+and a matching array of axis values.
 
-The VarStore subtable is used to store variation deltas. It uses 16 bit integer values, but we use these for various flavors of 16 bit fixed values, too.
+The VarStore subtable is used to store variation deltas. It uses 16 bit integer
+values, but we use these for various flavors of 16 bit fixed values, too.
 
 ## Format details
 
@@ -150,11 +230,15 @@ The VarStore subtable is used to store variation deltas. It uses 16 bit integer 
 - LOffset: GlyphData[numGlyphs]
 - LOffset: VarStore
 
-GlyphData: this is an array of offsets to glyph data subtables. It is indexed by glyph ID. If an offset is zero, then there is no data for this glyph. The numGlyphs field less than or equal to the total number of glyphs in the font.
+GlyphData: this is an array of offsets to glyph data subtables. It is indexed by
+glyph ID. If an offset is zero, then there is no data for this glyph. The
+numGlyphs field less than or equal to the total number of glyphs in the font.
 
-VarStore: existing data structure to store all variation data, as used by GDEF, HVAR, VVAR, MVAR, etc.
+VarStore: existing data structure to store all variation data, as used by GDEF,
+HVAR, VVAR, MVAR, etc.
 
-Glyph: the data for a single glyph contains the component data for all components. The number of components is derived from the ‘glyf’ table.
+Glyph: the data for a single glyph contains the component data for all
+components. The number of components is derived from the ‘glyf’ table.
 
 Component:
 
@@ -163,7 +247,9 @@ Component:
   - This is a uint16 if bit 3 of “flags” is set, else a uint8
 - uint8 or uint16: axisIndices[numAxes]
   - This is a uint16 if bit 3 of “flags” is set, else a uint8
-  - The most significant bit of each axisIndex tells whether this axis has a VarIdx in the VarIdxs array below. Bits 0..6 (uint8) or 0..14 (uint16) form the axis index.
+  - The most significant bit of each axisIndex tells whether this axis has a
+  VarIdx in the VarIdxs array below. Bits 0..6 (uint8) or 0..14 (uint16) form
+  the axis index.
 - Coord16: axisValues[numAxes]
   - The axis value for each axis
 - Angle16: Rotation
@@ -182,7 +268,8 @@ Component:
   - Optional, only present if it 11 of “flags” is set
 - uint8: varIdxFormat
 - VarIdx: VarIdxs[varIdxCount]
-  - Each VarIdx value represents an index into the VarStore, which contains all variation data.
+  - Each VarIdx value represents an index into the VarStore, which contains all
+    variation data.
   - varIdxCount is determined by the sum of:
     - The number of axes that have a VarIdx
     - The number of transformation fields, if bit 4 of “flags” is set
@@ -205,16 +292,39 @@ Component flags:
 - bit 14: (reserved, set to 0)
 - bit 15: (reserved, set to 0)
 
-Angle16: this is an int16 value used to represent an angle between -360 and +360 degrees. It’s neither radians nor degrees, but uses 16 bits of precision for 720 degrees of span, from -0x8000 to +0x8000 (excluding +0x8000 itself, as the maximum is 0x7FFF). **NOTE: this has to change because even if we agree that the range of -360 to +360 is enough for master values, delta values can easily exceed this limit.**
+Angle16: this is an int16 value used to represent an angle between -360 and +360
+degrees. It’s neither radians nor degrees, but uses 16 bits of precision for 720
+degrees of span, from -0x8000 to +0x8000 (excluding +0x8000 itself, as the
+maximum is 0x7FFF). **NOTE: this has to change because even if we agree that the
+range of -360 to +360 is enough for master values, delta values can easily
+exceed this limit.**
 
-Scale16: this is an int16 used as a 16 bit Fixed number, where the number of integer bits is specified by bits 0..2 of the “flags” field. This allows us to use 16 bits precision for a flexible range of scale values, depending on what the component needs. It avoids having a small maximum (as with Fixed2Dot14, which goes from -2 to +2) while sticking to 16 bits precision. The number of precision bits is 16 - number-of-integer-bits.
+Scale16: this is an int16 used as a 16 bit Fixed number, where the number of
+integer bits is specified by bits 0..2 of the “flags” field. This allows us to
+use 16 bits precision for a flexible range of scale values, depending on what
+the component needs. It avoids having a small maximum (as with Fixed2Dot14,
+which goes from -2 to +2) while sticking to 16 bits precision. The number of
+precision bits is 16 - number-of-integer-bits.
 
-Coord16: this is in int16 value used to represent a coordinate in a designspace location. This is currently defined as a Fixed2Dot14, but **this has to change because even though the -2..+2 range is enough for master values, delta values can easily exceed this limit.**
+Coord16: this is in int16 value used to represent a coordinate in a designspace
+location. This is currently defined as a Fixed2Dot14, but **this has to change
+because even though the -2..+2 range is enough for master values, delta values
+can easily exceed this limit.**
 
-VarIdx array: this is a compactly stored array with VarIdx values, which reference items in the VarStore. A VarIdx value is normally 32 bit, using 16 bits for the “outer” index and 16 bits for the “inner” index. This array uses 1, 2, 3 or 4 bytes to store them more compactly, specified by the “varIdxFormat” field. Details to be described.
+VarIdx array: this is a compactly stored array with VarIdx values, which
+reference items in the VarStore. A VarIdx value is normally 32 bit, using 16
+bits for the “outer” index and 16 bits for the “inner” index. This array uses 1,
+2, 3 or 4 bytes to store them more compactly, specified by the “varIdxFormat”
+field. Details to be described.
 
 ## Notes on non-linear interpolation
 
-Because the (local) axes for VariableComponents are controlled by global (user) axes, this proposal contains the possibility to do non-linear interpolation, without the need for duplicate fvar axis tags (\*). However, it is currently limited to variable components. It is possible to change the proposal in a small way that could apply the same control over designspace location and transformation on the outlines of the glyph, if it is not a composite.
+Because the (local) axes for VariableComponents are controlled by global (user)
+axes, this proposal contains the possibility to do non-linear interpolation,
+without the need for duplicate fvar axis tags (\*). However, it is currently
+limited to variable components. It is possible to change the proposal in a small
+way that could apply the same control over designspace location and
+transformation on the outlines of the glyph, if it is not a composite.
 
-\*) By giving multiple fvar axes the same axis tags, many implementations allow multiple axes to be controlled from a single value.
+\*) By giving multiple fvar axes the same axis tags, many implementations allow
+\*) multiple axes to be controlled from a single value.
