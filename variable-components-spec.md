@@ -275,20 +275,20 @@ Component flags:
 
 | bit number | meaning |
 |-|-|
-| bit 0..2 | Number of integer bits for ScaleX and ScaleY, mask: 0x07 |
-| bit 3 | axis indices are shorts (clear = bytes, set = shorts) |
-| bit 4 | Transformation fields have VarIdx |
-| bit 5 | have Rotation |
-| bit 6 | have ScaleX |
-| bit 7 | have ScaleY |
-| bit 8 | have SkewX |
-| bit 9 | have SkewY |
-| bit 10 | have TCenterX |
-| bit 11 | have TCenterY |
-| bit 12 | If ScaleY is missing: take value from ScaleX (? to be detailed) |
-| bit 13 | (reserved, set to 0) |
-| bit 14 | (reserved, set to 0) |
-| bit 15 | (reserved, set to 0) |
+| 0..2 | Number of integer bits for ScaleX and ScaleY, mask: 0x07 |
+| 3 | axis indices are shorts (clear = bytes, set = shorts) |
+| 4 | Transformation fields have VarIdx |
+| 5 | have Rotation |
+| 6 | have ScaleX |
+| 7 | have ScaleY |
+| 8 | have SkewX |
+| 9 | have SkewY |
+| 10 | have TCenterX |
+| 11 | have TCenterY |
+| 12 | If ScaleY is missing: take value from ScaleX (? to be detailed) |
+| 13 | (reserved, set to 0) |
+| 14 | (reserved, set to 0) |
+| 15 | (reserved, set to 0) |
 
 Angle16: this is an int16 value used to represent an angle between -360 and +360
 degrees. It’s neither radians nor degrees, but uses 16 bits of precision for 720
