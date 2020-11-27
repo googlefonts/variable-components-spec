@@ -324,4 +324,4 @@ way that could apply the same control over designspace location and
 transformation on the outlines of the glyph, if it is not a composite.
 
 \*) By giving multiple fvar axes the same axis tags, many implementations allow
-\*) multiple axes to be controlled from a single value.
+multiple axes to be controlled from a single value.
