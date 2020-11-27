@@ -177,13 +177,15 @@ used to construct a transformation matrix.
 
 Transformation fields:
 
-- Rotation (default = 0)
-- ScaleX (default = 1)
-- ScaleY (default = 1)
-- SkewX (default = 0)
-- SkewY (default = 0)
-- TCenterX (default = 0)
-- TCenterY (default = 0)
+| Field name | default value |
+|-|-|
+| Rotation | 0 |
+| ScaleX | 1 |
+| ScaleY | 1 |
+| SkewX | 0 |
+| SkewY | 0 |
+| TCenterX | 0 |
+| TCenterY | 0 |
 
 The TCenterX and TCenterY values represent the “center of transformation”. This
 is separate from the component offset as stored in the ‘glyf’ table.
@@ -226,10 +228,12 @@ values, but we use these for various flavors of 16 bit fixed values, too.
 
 ## Format details
 
-- Version: Version = 0x00010000
-- uint16: numGlyphs
-- LOffset: GlyphData[numGlyphs]
-- LOffset: VarStore
+| type | name | value |
+|-|-|-|
+| Version | Version | 0x00010000 |
+| uint16 | numGlyphs |
+| LOffset | GlyphData[numGlyphs] |
+| LOffset | VarStore |
 
 GlyphData: this is an array of offsets to glyph data subtables. It is indexed by
 glyph ID. If an offset is zero, then there is no data for this glyph. The
