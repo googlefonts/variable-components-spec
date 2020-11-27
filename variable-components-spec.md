@@ -26,19 +26,19 @@ diacritics. Components can be arbitrarily positioned in the composite glyph, and
 can be scaled and rotated and skewed if needed.
 
 “Variable Components”, as described in this document, add further parameters to
-“customize their appearance in the composite glyph.
+customize their appearance in the composite glyph.
 
 With OpenType 1.8, “variations” were added to the format, allowing for live
 interpolation between (say) Regular and Bold. These variations are global to the
 font: they are controlled by the user for the font as a whole. Such a font is no
-longer static, and the end user can navigate a design space along dimensions
-(axes) defined by the font. The chosen variation is called the design space
-location, as a set of coordinates in the design space.
+longer static, and the end user can navigate a _design space_ along dimensions
+(axes) defined by the font. The chosen variation is called the _design space
+location_, as a set of coordinates in the _design space_.
 
-“Variable Components” add the possibility to place a variable glyph in a
-“composite glyph, specifying the interpolation settings (the design space
-“location) for that single occurrence. A single glyph may define its own design
-“space, for composites to use as they see fit.
+“Variable Components” add the possibility to place a _variable glyph_ in a
+composite glyph, specifying the interpolation settings (the _design space
+location_) for that single occurrence. A single glyph may define its own _design
+space_, for composites to use as they see fit.
 
 ## Use cases
 
@@ -63,9 +63,9 @@ Variable Components.
 
 The proposal presented here was informed by the following priorities:
 
-- Only add to the OpenType 1.8 format, if possible
+- Only _add_ to the OpenType 1.8 format, if possible
 - Avoid changing existing OpenType 1.8 tables as much as possible
-- Use existing data structures whenever possible
+- Use _existing data structures_ whenever possible
 - Build on TrueType-flavored data
 - Use the existing mechanisms available in OpenType 1.8 as much as possible:
   - Use ‘glyf’ table composites/components
@@ -80,18 +80,19 @@ Here are some of the insights that led to the current design, in order:
 
 1. The composite is in full control of the design space location of the
 component
-1. The global design space location can affect the composite glyph, but it does
-not need to affect the design space location of the base glyph directly. 1. A
-“base glyph” is just a regular ‘glyf’-based glyph, using ‘gvar’ for variations,
-but it needs to be able to use axes that are not user-controllable.
+1. The _global_ design space location can affect the composite glyph, but it
+_does not need to affect_ the design space location of the base glyph
+_directly_.
+1. A “base glyph” is just a regular ‘glyf’-based glyph, using ‘gvar’ for
+variations, but it needs to be able to use axes that are not user-controllable.
 1. We can use ‘fvar’ axes, but we need to be able to flag an axis as “This axis
 is for variable component use only, do not expose it to the user, ever, at all”.
 This is one step further than the existing “hidden” axis flag.
 1. The total number of axes that can be used by a font (as specified in the
 ‘fvar’ table) does not have an unreasonable limit (65536) per se, but it is not
 without cost: in some places – for example in ‘gvar’ variation tuples or
-VarStore regions – there is a value specified for every single axis in the font,
-even if that axis does not participate in a certain variation. This is
+VarStore regions – there is a value specified for _every single_ axis in the
+font, even if that axis does not participate in a certain variation. This is
 especially relevant for ‘gvar’, as there can be many tuple variations (many
 glyphs × many variations per glyph), so adding even a single axis to a font can
 have a significant impact on the file size. So: let’s not use more axes than
@@ -104,13 +105,13 @@ The “axis tag” is completely irrelevant. (Axis tags are only used for user
 interaction, and are not referenced anywhere in the font outside of the ‘fvar’
 table.)
 1. The previous points lead to the conclusion that a single axis can be (re)used
-for different purposes by different base glyphs. The axis identity is no longer
-attached to a function that is meaningful for the end user, or any specific
-meaning at all. For example, base glyph X may use axis #2 to implement
+_for different purposes_ by _different base glyphs_. The axis _identity_ is no
+longer attached to a function that is meaningful for the end user, or any
+specific meaning at all. For example, base glyph X may use axis #2 to implement
 “stretching”, but base glyph Y may use the same axis #2 to implement “bending”.
-The meaning of an axis is completely local to the base glyph. Each component
+The _meaning_ of an axis is completely local to the base glyph. Each component
 specifies the local design space location for its base glyph.
-1. Concluding, the local design space for a base glyph does not need any more
+1. Concluding, the _local design space_ for a base glyph does not need any more
 information than what we already have: it is completely defined by its
 variations’ locations in the ‘gvar’ table.
 
