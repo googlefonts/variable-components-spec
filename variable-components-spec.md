@@ -4,6 +4,19 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
 
 *(Work in progress!)*
 
+### Authors:
+* Just van Rossum ([@justvanrossum](https://github.com/justvanrossum))
+* Jérémie Hornus ([@JeremieHornus](https://github.com/JeremieHornus))
+
+## Table of Contents
+
+- [What are Variable Components](#what-are-variable-components)
+- [Use cases](#use-cases)
+- [Proposal overview](#proposal-overview)
+- [Format overview](#format-overview)
+- [Format details](#format-details)
+- [Notes on non-linear interpolation](#notes-on-non-linear-interpolation)
+
 ## What are Variable Components?
 
 TrueType has had the capability to form composite glyphs since its inception. A composite glyph references other glyphs as “components”. This is a simple way to save data storage, for glyphs that can be composed of other glyphs, such as diacritics. Components can be arbitrarily positioned in the composite glyph, and can be scaled and rotated and skewed if needed.
