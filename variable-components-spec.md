@@ -10,7 +10,7 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
 
 ## Table of Contents
 
-- [What are Variable Components](#what-are-variable-components)
+- [What are Variable Components?](#what-are-variable-components)
 - [Use cases](#use-cases)
 - [Proposal overview](#proposal-overview)
   - [Extend the OpenType format](#Extend-the-OpenType-format)
