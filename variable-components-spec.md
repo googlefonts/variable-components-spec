@@ -15,6 +15,8 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
 - [Proposal overview](#proposal-overview)
   - [Extend the OpenType format](#Extend-the-OpenType-format)
 - [Format overview](#format-overview)
+  - [The Component data structure](#the-component-data-structure)
+    - [Transformation](#transformation)
 - [Format details](#format-details)
 - [Notes on non-linear interpolation](#notes-on-non-linear-interpolation)
 
@@ -162,28 +164,40 @@ recursive nature of TrueType components.
 
 ## Format overview
 
-‘VarC’ table overview:
+High level structure of the ‘VarC’ table:
 
-- Version = 0x00010000
-- numGlyphs
-- GlyphData[numGlyphs]
-- VarStore
+| name | ... |
+|-|-|
+| Version | version field, initially `0x00010000` |
+| numGlyphs | the number of glyphs |
+| GlyphData[numGlyphs] | array of glyph data |
+| VarStore | variation data |
 
-The core of the format is the Component. For ‘VarC’, a glyph is an array of
-components.
+`GlyphData` is an array of offsets to `Glyph` subtables, indexed by `GlyphID`.
 
-‘VarC’ depends highly on ‘glyf’: for example, the number of components in a
-‘glyph is needed to parse a ‘VarC’ glyph, but that number can only be found in
-‘the ‘glyf’ table.
+`numGlyphs` must be less than or equal to the `numGlyphs` field in the `maxp`
+table.
 
-The data for a component is stored as part of the glyph data.
+A `Glyph` subtable is an array of variable length `Component` data.
 
-The transformation data is stored as individual optional fields which can be
+The `VarC` table depends on the `glyf` table: to parse a `VarC` `Glyph`, one
+needs to know the number of components from the `glyf` table. That number is
+not duplicated in `VarC`.
+
+### The Component data structure
+
+The `Component` data structure stores the additional transformation fields,
+the designspace location for the components, and indices into the `VarStore`
+for each value that needs variations.
+
+#### Transformation
+
+The transformation data consists of individual optional fields, which can be
 used to construct a transformation matrix.
 
 Transformation fields:
 
-| Field name | default value |
+| name | default value |
 |-|-|
 | Rotation | 0 |
 | ScaleX | 1 |
@@ -193,11 +207,11 @@ Transformation fields:
 | TCenterX | 0 |
 | TCenterY | 0 |
 
-The TCenterX and TCenterY values represent the “center of transformation”. This
-is separate from the component offset as stored in the ‘glyf’ table.
+The `TCenterX` and `TCenterY` values represent the “center of transformation”.
+This is separate from the component offset as stored in the `glyf` table.
 
 Details of how to build a transformation matrix, as pseudo-Python/fontTools
-code, where (X, Y) is the component offset:
+code, where `(X, Y)` is the component offset from the `glyf` table:
 
     # Using fontTools.misc.transform.Transform
     t = Transform()  # Identity
@@ -209,7 +223,7 @@ code, where (X, Y) is the component offset:
 
 The transformation fields are stored as individual fields, and are interpolated
 as individual fields. If the client needs a transformation matrix, then this
-matrix needs to be constructed after interpolation.
+matrix needs to be constructed *after* interpolation.
 
 Rationale for using a transformation center, using Rotation as an example:
 
