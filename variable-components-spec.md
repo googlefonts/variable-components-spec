@@ -26,13 +26,13 @@ diacritics. Components can be arbitrarily positioned in the composite glyph, and
 can be scaled and rotated and skewed if needed.
 
 “Variable Components”, as described in this document, add further parameters to
-customize their appearance in the composite glyph.
+customize the appearance of components in the composite glyph.
 
 With OpenType 1.8, “variations” were added to the format, allowing for live
-interpolation between (say) Regular and Bold. These variations are global to the
+interpolation between (say) regular and bold. These variations are global to the
 font: they are controlled by the user for the font as a whole. Such a font is no
 longer static, and the end user can navigate a _design space_ along dimensions
-(axes) defined by the font. The chosen variation is called the _design space
+(axes) defined by the font. The chosen variation is defined by the _design space
 location_, as a set of coordinates in the _design space_.
 
 “Variable Components” add the possibility to place a _variable glyph_ in a
