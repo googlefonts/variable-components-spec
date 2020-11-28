@@ -88,12 +88,12 @@ _does not need to affect_ the design space location of the base glyph
 _directly_.
 1. A “base glyph” is just a regular `glyf`-based glyph, using `gvar` for
 variations, but it needs to be able to use axes that are not user-controllable.
-1. We can use ‘fvar’ axes, but we need to be able to flag an axis as “This axis
+1. We can use `fvar` axes, but we need to be able to flag an axis as “This axis
 is for variable component use only, do not expose it to the user, ever, at all”.
 This is perhaps more strict than the definition of the existing “hidden” axis
 flag, and we need to establish whether a new axis flag may be needed.
 1. The total number of axes that can be used by a font (as specified in the
-‘fvar’ table) does not have an unreasonable limit per se (65536), but it is not
+`fvar` table) does not have an unreasonable limit per se (65536), but it is not
 without cost: in some places – for example in `gvar` variation tuples or
 VarStore regions – there is a value specified for _every single_ axis in the
 font, even if that axis does not participate in a certain variation. This is
@@ -104,10 +104,10 @@ strictly necessary.
 1. A Variable Component axis is not exposed to the user, and there is no need
 for “user coordinates”: the composite will only ever use “normalized
 coordinates” to specify a design space location. Also: we don't consider
-‘avar’-like functionality necessary here.
+`avar`-like functionality necessary here.
 1. A Variable Component axis is internally always referenced by its axis index.
 The “axis tag” is completely irrelevant. (Axis tags are only used for user
-interaction, and are not referenced anywhere in the font outside of the ‘fvar’
+interaction, and are not referenced anywhere in the font outside of the `fvar`
 table.)
 1. The previous points lead to the conclusion that a single axis can be (re)used
 for _different purposes_ by _different base glyphs_. The axis _identity_ is no
@@ -125,7 +125,7 @@ variations’ locations in the `gvar` table.
 To make Variable Components work, the only thing that is missing from OpenType
 1.8 is the capability to store some additional information for each component of
 composite glyphs. The core of this proposal is to add a single new table, called
-‘VarC’, that will provide a space for all new information.
+`VarC`, that will provide a space for all new information.
 
 A Variable Component reference needs the following information:
 
@@ -146,7 +146,7 @@ several reasons:
 - Scale factors (and matrix values) are Fixed2Dot14, meaning they are limited to
 the range -2.0..+2.0, which is a problem for some use cases.
 - `gvar` only supports interpolation of the component offset values, not of the
-- ‘scale values or the matrix.
+scale values or the matrix.
 - To interpolate 2×2 transformation matrices in a useful way is non-obvious and
 - non-trivial, even when decomposing into scale, rotations and skew values.
 
@@ -154,9 +154,9 @@ Summarizing:
 
 - For the base glyph ID, the component offset and its variations, we rely on
 `glyf` + `gvar` Additional transformation values (scale, rotation, etc.) and
-- its variations will be stored in ‘VarC’
+- its variations will be stored in `VarC`
 - The component design space location and its variations will also be stored in
-‘VarC’
+`VarC`
 
 Base glyphs are totally ordinary `glyf` + `gvar` glyphs, but can also be
 composites themselves, using Variable Components, so we fully embrace the
@@ -164,7 +164,7 @@ recursive nature of TrueType components.
 
 ## Format overview
 
-High level structure of the ‘VarC’ table:
+High level structure of the `VarC` table:
 
 | name | ... |
 |-|-|
