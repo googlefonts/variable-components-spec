@@ -133,8 +133,8 @@ A Variable Component reference needs the following information:
 - A transformation (offset, scale, rotation, etc.)
 - A design space location
 - Variations for the transformation and the design space location, so the
-- composite itself can become a variable glyph (whether as a “normal” glyph, or
-- referenced as a Variable Component by another glyph)
+composite itself can become a variable glyph (whether as a “normal” glyph, or
+referenced as a Variable Component by another glyph)
 
 We use the composites/components mechanism from the `glyf` table, so some of
 these values are already taken care of: the base glyph ID and the offset. 
@@ -148,13 +148,13 @@ the range -2.0..+2.0, which is a problem for some use cases.
 - `gvar` only supports interpolation of the component offset values, not of the
 scale values or the matrix.
 - To interpolate 2×2 transformation matrices in a useful way is non-obvious and
-- non-trivial, even when decomposing into scale, rotations and skew values.
+non-trivial, even when decomposing into scale, rotations and skew values.
 
 Summarizing:
 
 - For the base glyph ID, the component offset and its variations, we rely on
 `glyf` + `gvar` Additional transformation values (scale, rotation, etc.) and
-- its variations will be stored in `VarC`
+its variations will be stored in `VarC`
 - The component design space location and its variations will also be stored in
 `VarC`
 
