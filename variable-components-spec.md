@@ -71,8 +71,8 @@ The proposal presented here was informed by the following priorities:
 - Use _existing data structures_ whenever possible
 - Build on TrueType-flavored data
 - Use the existing mechanisms available in OpenType 1.8 as much as possible:
-  - Use ‘glyf’ table composites/components
-  - Use ‘gvar’ for variations
+  - Use `glyf` table composites/components
+  - Use `gvar` for variations
 - Make it easy for existing implementations to adapt
 - Store the Variable Component data in a compact form, to maximize space saving
 
@@ -86,7 +86,7 @@ component
 1. The _global_ design space location can affect the composite glyph, but it
 _does not need to affect_ the design space location of the base glyph
 _directly_.
-1. A “base glyph” is just a regular ‘glyf’-based glyph, using ‘gvar’ for
+1. A “base glyph” is just a regular `glyf`-based glyph, using `gvar` for
 variations, but it needs to be able to use axes that are not user-controllable.
 1. We can use ‘fvar’ axes, but we need to be able to flag an axis as “This axis
 is for variable component use only, do not expose it to the user, ever, at all”.
@@ -94,10 +94,10 @@ This is perhaps more strict than the definition of the existing “hidden” axi
 flag, and we need to establish whether a new axis flag may be needed.
 1. The total number of axes that can be used by a font (as specified in the
 ‘fvar’ table) does not have an unreasonable limit per se (65536), but it is not
-without cost: in some places – for example in ‘gvar’ variation tuples or
+without cost: in some places – for example in `gvar` variation tuples or
 VarStore regions – there is a value specified for _every single_ axis in the
 font, even if that axis does not participate in a certain variation. This is
-especially relevant for ‘gvar’, as there can be many tuple variations (many
+especially relevant for `gvar`, as there can be many tuple variations (many
 glyphs × many variations per glyph), so adding even a single axis to a font can
 have a significant impact on the file size. So: let’s not use more axes than
 strictly necessary.
@@ -118,7 +118,7 @@ The _meaning_ of an axis is completely local to the base glyph. Each component
 specifies the local design space location for its base glyph.
 1. Concluding, the _local design space_ for a base glyph does not need any more
 information than what we already have: it is completely defined by its
-variations’ locations in the ‘gvar’ table.
+variations’ locations in the `gvar` table.
 
 ### Extending the OpenType format
 
@@ -136,16 +136,16 @@ A Variable Component reference needs the following information:
 - composite itself can become a variable glyph (whether as a “normal” glyph, or
 - referenced as a Variable Component by another glyph)
 
-We use the composites/components mechanism from the ‘glyf’ table, so some of
+We use the composites/components mechanism from the `glyf` table, so some of
 these values are already taken care of: the base glyph ID and the offset. 
 
-Components in the ‘glyf’ table can optionally specify a scale value, or x/y
+Components in the `glyf` table can optionally specify a scale value, or x/y
 scale values, or a 2×2 transformation matrix, but we chose not to use these for
 several reasons:
 
 - Scale factors (and matrix values) are Fixed2Dot14, meaning they are limited to
 the range -2.0..+2.0, which is a problem for some use cases.
-- ‘gvar’ only supports interpolation of the component offset values, not of the
+- `gvar` only supports interpolation of the component offset values, not of the
 - ‘scale values or the matrix.
 - To interpolate 2×2 transformation matrices in a useful way is non-obvious and
 - non-trivial, even when decomposing into scale, rotations and skew values.
@@ -153,12 +153,12 @@ the range -2.0..+2.0, which is a problem for some use cases.
 Summarizing:
 
 - For the base glyph ID, the component offset and its variations, we rely on
-‘glyf’ + ‘gvar’ Additional transformation values (scale, rotation, etc.) and
+`glyf` + `gvar` Additional transformation values (scale, rotation, etc.) and
 - its variations will be stored in ‘VarC’
 - The component design space location and its variations will also be stored in
 ‘VarC’
 
-Base glyphs are totally ordinary ‘glyf’ + ‘gvar’ glyphs, but can also be
+Base glyphs are totally ordinary `glyf` + `gvar` glyphs, but can also be
 composites themselves, using Variable Components, so we fully embrace the
 recursive nature of TrueType components.
 
@@ -263,23 +263,23 @@ VarStore: existing data structure to store all variation data, as used by GDEF,
 HVAR, VVAR, MVAR, etc.
 
 Glyph: the data for a single glyph contains the component data for all
-components. The number of components is derived from the ‘glyf’ table.
+components. The number of components is derived from the `glyf` table.
 
 Component:
 
 | type | name | notes |
 |-|-|-|
 | uint16 | flags | see below |
-| uint8 or uint16 | numAxes | This is a uint16 if bit 3 of “flags” is set, else a uint8 |
-| uint8 or uint16 | axisIndices[numAxes] | This is a uint16 if bit 3 of “flags” is set, else a uint8<br/>The most significant bit of each axisIndex tells whether this axis has a VarIdx in the VarIdxs array below. Bits 0..6 (uint8) or 0..14 (uint16) form the axis index. |
+| uint8 or uint16 | numAxes | This is a uint16 if bit 3 of `flags` is set, else a uint8 |
+| uint8 or uint16 | axisIndices[numAxes] | This is a uint16 if bit 3 of `flags` is set, else a uint8<br/>The most significant bit of each axisIndex tells whether this axis has a VarIdx in the VarIdxs array below. Bits 0..6 (uint8) or 0..14 (uint16) form the axis index. |
 | Coord16 | axisValues[numAxes] | The axis value for each axis |
-| Angle16 | Rotation | Optional, only present if it 5 of “flags” is set |
-| Scale16 | ScaleX | Optional, only present if it 6 of “flags” is set |
-| Scale16 | ScaleY | Optional, only present if it 7 of “flags” is set |
-| Angle16 | SkewX | Optional, only present if it 8 of “flags” is set |
-| Angle16 | SkewY | Optional, only present if it 9 of “flags” is set |
-| Int16 | TCenterX | Optional, only present if it 10 of “flags” is set |
-| int16 |  TCenterY | Optional, only present if it 11 of “flags” is set |
+| Angle16 | Rotation | Optional, only present if it 5 of `flags` is set |
+| Scale16 | ScaleX | Optional, only present if it 6 of `flags` is set |
+| Scale16 | ScaleY | Optional, only present if it 7 of `flags` is set |
+| Angle16 | SkewX | Optional, only present if it 8 of `flags` is set |
+| Angle16 | SkewY | Optional, only present if it 9 of `flags` is set |
+| Int16 | TCenterX | Optional, only present if it 10 of `flags` is set |
+| int16 |  TCenterY | Optional, only present if it 11 of `flags` is set |
 | uint8 | varIdxFormat |
 | VarIdx | VarIdxs[varIdxCount] | see below |
 
@@ -287,8 +287,8 @@ Component:
   variation data.
 - varIdxCount is determined by the sum of:
   - The number of axes that have a VarIdx
-  - The number of transformation fields, if bit 4 of “flags” is set
-- The format of the VarIdx entries is determined by the “varIdxFormat” field
+  - The number of transformation fields, if bit 4 of `flags` is set
+- The format of the VarIdx entries is determined by the `varIdxFormat` field
 (TODO: describe how)
 
 Component flags:
@@ -318,7 +318,7 @@ range of -360 to +360 is enough for master values, delta values can easily
 exceed this limit.**
 
 Scale16: this is an int16 used as a 16 bit Fixed number, where the number of
-integer bits is specified by bits 0..2 of the “flags” field. This allows us to
+integer bits is specified by bits 0..2 of the `flags` field. This allows us to
 use 16 bits precision for a flexible range of scale values, depending on what
 the component needs. It avoids having a small maximum (as with Fixed2Dot14,
 which goes from -2 to +2) while sticking to 16 bits precision. The number of
@@ -331,8 +331,8 @@ can easily exceed this limit.**
 
 VarIdx array: this is a compactly stored array with VarIdx values, which
 reference items in the VarStore. A VarIdx value is normally 32 bit, using 16
-bits for the “outer” index and 16 bits for the “inner” index. This array uses 1,
-2, 3 or 4 bytes to store them more compactly, specified by the “varIdxFormat”
+bits for the `outer` index and 16 bits for the `inner` index. This array uses 1,
+2, 3 or 4 bytes to store them more compactly, specified by the `varIdxFormat`
 field. Details to be described.
 
 ## Notes on non-linear interpolation
