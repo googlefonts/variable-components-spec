@@ -265,7 +265,7 @@ Steps:
     - Using the input designspace location, interpolate the transformation
     fields and the component's designspace location
     - Retrieve the outline using this algorithm recursively, but using the
-    component's designspace location as input instead.
+    component's designspace location and glyph ID as inputs instead.
     - Transform the outline according to the transformation
 - Else:
   - Proceed as usual, but apply the entire algorithm recursively, alling for
