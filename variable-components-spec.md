@@ -273,8 +273,18 @@ Steps:
 
 To clarify: Variable Components completely determine the designspace location
 for the base glyph. Any axis not specified by a Variable Component has to be
-interpreted as set to its *default*, regardless of the user designspace
-location.
+interpreted as set to its *default*, regardless of the parent designspace
+location. In other words, Variable Components do not implicitly pass the global
+designspace location down to the base glyphs. (It _can't_ pass down local
+designspace coordinates, as local designspace may reuse axis IDs for different
+purposes. Axis X may do something completely different for glyph A than for
+glyph B.
+
+_This may be opened for discussion: it can be useful to pass down the global
+designspace coordinates down to base glyphs (unless overridden), but then we
+need to distinguish between global `fvar` axes and local (anonymous) `fvar`
+axes, due to the reusable nature of local axes in this design. To allow this, we
+need a new `fvar` axis flag in addition to the "hidden" flag._
 
 # Format details
 
