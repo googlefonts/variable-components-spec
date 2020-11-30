@@ -268,7 +268,7 @@ Steps:
     component's designspace location and glyph ID as inputs instead.
     - Transform the outline according to the transformation
 - Else:
-  - Proceed as usual, but apply the entire algorithm recursively, alling for
+  - Proceed as usual, but apply the entire algorithm recursively, allowing for
   nested Variable Components
 
 # Format details
