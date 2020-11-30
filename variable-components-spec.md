@@ -13,7 +13,7 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
 - [What are Variable Components?](#what-are-variable-components)
 - [Use cases](#use-cases)
 - [Proposal overview](#proposal-overview)
-  - [Extend the OpenType format](#Extend-the-OpenType-format)
+  - [Extend the OpenType format](#extend-the-OpenType-format)
 - [Format overview](#format-overview)
   - [The Component data structure](#the-component-data-structure)
     - [Transformation](#transformation)
