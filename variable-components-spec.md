@@ -11,16 +11,17 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
 ## Table of Contents
 
 - [What are Variable Components?](#what-are-variable-components)
-- [Use cases](#use-cases)
+  - [Use cases](#use-cases)
 - [Proposal overview](#proposal-overview)
   - [Extend the OpenType format](#extend-the-OpenType-format)
 - [Format overview](#format-overview)
   - [The Component data structure](#the-component-data-structure)
     - [Transformation](#transformation)
+- [How to process VarC data?](#how-to-process-varc-data)
 - [Format details](#format-details)
 - [Notes on non-linear interpolation](#notes-on-non-linear-interpolation)
 
-## What are Variable Components?
+# What are Variable Components?
 
 TrueType has had the capability to form composite glyphs since its inception. A
 composite glyph references other glyphs as “components”. This is a simple way to
@@ -62,7 +63,7 @@ regular glyphs, for example superior and inferior numerals and small caps. It
 can be beneficial to represent these variations as local instances using
 Variable Components.
 
-## Proposal overview
+# Proposal overview
 
 The proposal presented here was informed by the following priorities:
 
@@ -120,7 +121,7 @@ specifies the local design space location for its base glyph.
 information than what we already have: it is completely defined by its
 variations’ locations in the `gvar` table.
 
-### Extending the OpenType format
+## Extending the OpenType format
 
 To make Variable Components work, the only thing that is missing from OpenType
 1.8 is the capability to store some additional information for each component of
@@ -162,7 +163,7 @@ Base glyphs are totally ordinary `glyf` + `gvar` glyphs, but can also be
 composites themselves, using Variable Components, so we fully embrace the
 recursive nature of TrueType components.
 
-## Format overview
+# Format overview
 
 High level structure of the `VarC` table:
 
@@ -184,13 +185,13 @@ The `VarC` table depends on the `glyf` table: to parse a `VarC` `Glyph`, one
 needs to know the number of components from the `glyf` table. That number is
 not duplicated in `VarC`.
 
-### The Component data structure
+## The Component data structure
 
 The `Component` data structure stores the additional transformation fields,
 the designspace location for the components, and indices into the `VarStore`
 for each value that needs variations.
 
-#### Transformation
+### Transformation
 
 The transformation data consists of individual optional fields, which can be
 used to construct a transformation matrix.
@@ -246,7 +247,31 @@ and a matching array of axis values.
 The VarStore subtable is used to store variation deltas. It uses 16 bit integer
 values, but we use these for various flavors of 16 bit fixed values, too.
 
-## Format details
+# How to process VarC data?
+
+When preparing a glyph outline for the rasterizer, the following logic needs to
+be applied:
+
+Inputs:
+- glyph ID
+- designspace location
+
+Output:
+- outline ready to be sent to the rasterizer
+
+Steps:
+- If the glyph is a composite and has an entry in the `VarC` table:
+  - for each component:
+    - Using the input designspace location, interpolate the transformation
+    fields and the component's designspace location
+    - Retrieve the outline using this algorithm recursively, but using the
+    component's designspace location as input instead.
+    - Transform the outline according to the transformation
+- Else:
+  - Proceed as usual, but apply the entire algorithm recursively, alling for
+  nested Variable Components
+
+# Format details
 
 | type | name | value |
 |-|-|-|
@@ -256,8 +281,9 @@ values, but we use these for various flavors of 16 bit fixed values, too.
 | LOffset | VarStore |
 
 GlyphData: this is an array of offsets to glyph data subtables. It is indexed by
-glyph ID. If an offset is zero, then there is no data for this glyph. The
-numGlyphs field less than or equal to the total number of glyphs in the font.
+glyph ID. If an offset is zero, then there is no `Glyph` data for this glyph.
+The numGlyphs field less than or equal to the total number of glyphs in the
+font.
 
 VarStore: existing data structure to store all variation data, as used by GDEF,
 HVAR, VVAR, MVAR, etc.
@@ -335,7 +361,7 @@ bits for the `outer` index and 16 bits for the `inner` index. This array uses 1,
 2, 3 or 4 bytes to store them more compactly, specified by the `varIdxFormat`
 field. Details to be described.
 
-## Notes on non-linear interpolation
+# Notes on non-linear interpolation
 
 Because the (local) axes for VariableComponents are controlled by global (user)
 axes, this proposal contains the possibility to do non-linear interpolation,
