@@ -271,6 +271,11 @@ Steps:
   - Proceed as usual, but apply the entire algorithm recursively, allowing for
   nested Variable Components
 
+To clarify: Variable Components completely determine the designspace location
+for the base glyph. Any axis not specified by a Variable Component has to be
+interpreted as set to its *default*, regardless of the user designspace
+location.
+
 # Format details
 
 | type | name | value |
