@@ -321,7 +321,7 @@ Component:
 | Angle16 | SkewY | Optional, only present if it 9 of `flags` is set |
 | Int16 | TCenterX | Optional, only present if it 10 of `flags` is set |
 | int16 |  TCenterY | Optional, only present if it 11 of `flags` is set |
-| uint8 | varIdxFormat |
+| uint8 | entryFormat |
 | VarIdx | VarIdxs[varIdxCount] | see below |
 
 - Each VarIdx value represents an index into the VarStore, which contains all
@@ -329,8 +329,8 @@ Component:
 - varIdxCount is determined by the sum of:
   - The number of axes that have a VarIdx
   - The number of transformation fields, if bit 4 of `flags` is set
-- The format of the VarIdx entries is determined by the `varIdxFormat` field
-(TODO: describe how)
+- VarIdx entries are 1, 2, 3 or 4 bytes long. This is determined by the
+`entryFormat` field, see below.
 
 Component flags:
 
@@ -373,8 +373,10 @@ can easily exceed this limit.**
 VarIdx array: this is a compactly stored array with VarIdx values, which
 reference items in the VarStore. A VarIdx value is normally 32 bit, using 16
 bits for the `outer` index and 16 bits for the `inner` index. This array uses 1,
-2, 3 or 4 bytes to store them more compactly, specified by the `varIdxFormat`
-field. Details to be described.
+2, 3 or 4 bytes to store them more compactly, specified by the `entryFormat`
+field, which is identical to the `entryFormat` field of the
+[`DeltaSetIndexMap` `HVAR` subtable](https://docs.microsoft.com/en-us/typography/opentype/spec/hvar#table-formats).
+
 
 # Notes on non-linear interpolation
 
