@@ -351,26 +351,26 @@ Component flags:
 | 14 | (reserved, set to 0) |
 | 15 | (reserved, set to 0) |
 
-`Angle16`: this is an int16 value used to represent an angle between -360 and +360
+**`Angle16`**: this is an int16 value used to represent an angle between -360 and +360
 degrees. It’s neither radians nor degrees, but uses 16 bits of precision for 720
 degrees of span, from -0x8000 to +0x8000 (excluding +0x8000 itself, as the
 maximum is 0x7FFF). **NOTE: this has to change because even if we agree that the
 range of -360 to +360 is enough for master values, delta values can easily
 exceed this limit.**
 
-`Scale16`: this is an int16 used as a 16 bit Fixed number, where the number of
+**`Scale16`**: this is an int16 used as a 16 bit Fixed number, where the number of
 integer bits is specified by bits 0..2 of the `flags` field. This allows us to
 use 16 bits precision for a flexible range of scale values, depending on what
 the component needs. It avoids having a small maximum (as with Fixed2Dot14,
 which goes from -2 to +2) while sticking to 16 bits precision. The number of
 precision bits is 16 - number-of-integer-bits.
 
-`Coord16`: this is in int16 value used to represent a coordinate in a designspace
+**`Coord16`**: this is in int16 value used to represent a coordinate in a designspace
 location. This is currently defined as a Fixed2Dot14, but **this has to change
 because even though the -2..+2 range is enough for master values, delta values
 can easily exceed this limit.**
 
-`VarIdx` array: this is a compactly stored array with `VarIdx` values, which
+**`VarIdx`** array: this is a compactly stored array with `VarIdx` values, which
 reference items in the VarStore. A VarIdx value is normally 32 bit, using 16
 bits for the `outer` index and 16 bits for the `inner` index. The array items
 are 1, 2, 3 or 4 bytes long, and are formatted as specified by the `entryFormat`
