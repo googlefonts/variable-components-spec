@@ -238,8 +238,7 @@ left side as the center, and in another, it should be rotated using the right
 side as the center.
 - This all wouldn’t make a difference if it wasn’t for interpolation: it’s
 really about how the component moves when transitioning from one composite
-master to another.
-- (This should be illustrated visually.)
+master to another. _(This should be illustrated visually)_
 
 The design space location for components is stored as an array of axis indices
 and a matching array of axis values.
