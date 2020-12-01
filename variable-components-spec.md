@@ -273,7 +273,7 @@ Steps:
 
 To clarify: Variable Components completely determine the designspace location
 for the base glyph. Any axis not specified by a Variable Component has to be
-interpreted as set to its *default*, regardless of the parent designspace
+interpreted as set to its *default*, regardless of the global designspace
 location. In other words, Variable Components do not implicitly pass the global
 designspace location down to the base glyphs. (It _can't_ pass down local
 designspace coordinates, as local designspace may reuse axis IDs for different
