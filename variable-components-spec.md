@@ -375,7 +375,8 @@ reference items in the VarStore. A VarIdx value is normally 32 bit, using 16
 bits for the `outer` index and 16 bits for the `inner` index. The array items
 are 1, 2, 3 or 4 bytes long, and are formatted as specified by the `entryFormat`
 field. This is identical to the `entryFormat` field of the
-[`DeltaSetIndexMap` `HVAR` subtable](https://docs.microsoft.com/en-us/typography/opentype/spec/hvar#table-formats).
+[`DeltaSetIndexMap` subtable](https://docs.microsoft.com/en-us/typography/opentype/spec/hvar#table-formats)
+from the `HVAR` table.
 
 # Notes on non-linear interpolation
 
