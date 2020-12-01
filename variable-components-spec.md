@@ -321,7 +321,7 @@ Component:
 | Angle16 | SkewY | Optional, only present if it 9 of `flags` is set |
 | Int16 | TCenterX | Optional, only present if it 10 of `flags` is set |
 | int16 |  TCenterY | Optional, only present if it 11 of `flags` is set |
-| uint8 | entryFormat |
+| uint8 | entryFormat | See below |
 | VarIdx | VarIdxs[varIdxCount] | see below |
 
 - Each `VarIdx` value represents an index into the `VarStore`, which contains all
