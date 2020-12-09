@@ -372,12 +372,11 @@ that are outside of the master value range.
 
 ## Field formats
 
-**`Angle16`**: this is an int16 value used to represent an angle between -360
-and +360 degrees. It’s neither radians nor degrees, but uses 16 bits of
-precision for 720 degrees of span, from -0x8000 to +0x8000 (excluding +0x8000
-itself, as the maximum is 0x7FFF). **NOTE: this has to change because even if we
-agree that the range of -360 to +360 is enough for master values, delta values
-can easily exceed this limit.**
+**`Angle16`**: this is an int16 value used to represent an angle. To scale an
+angle in degrees to this format, multiply the angle by `0x8000 / (4 * 360)`.
+This gives us an effective range of -1440 degrees to +1440 degrees. Master
+values are expected to be between -360 and +360 degrees. The extra headroom
+is to allow for delta values that are outside of the master range.
 
 **`Scale16`**: this is an int16 used as a 16 bit Fixed number, where the number
 of integer bits is specified by bits 0..2 of the `flags` field. This allows us
