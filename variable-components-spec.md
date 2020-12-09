@@ -19,6 +19,8 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
     - [Transformation](#transformation)
 - [How to process VarC data?](#how-to-process-varc-data)
 - [Format details](#format-details)
+  - [Notes on precision](#notes-on-precision)
+  - [Field formats](#field-formats)
 - [New axis flag for the vartable](#new-axis-flag-for-the-fvar-table)
 - [Notes on non-linear interpolation](#notes-on-non-linear-interpolation)
 
@@ -351,6 +353,16 @@ Component flags:
 | 13 | (reserved, set to 0) |
 | 14 | (reserved, set to 0) |
 | 15 | (reserved, set to 0) |
+
+## Notes on precision
+
+We chose to store all relevant fields as 16-bit values for maximum compactness,
+and compatibility with the VarStore format. The downside of this is that we need
+to choose the range of the fields carefully, as the range of _delta values_ may
+exceed the range of master values by a factor related to the number of axes
+involved.
+
+## Field formats
 
 **`Angle16`**: this is an int16 value used to represent an angle between -360 and +360
 degrees. It’s neither radians nor degrees, but uses 16 bits of precision for 720
