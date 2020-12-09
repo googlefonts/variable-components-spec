@@ -158,7 +158,7 @@ non-trivial, even when decomposing into scale, rotations and skew values.
 Summarizing:
 
 - For the base glyph ID, the component offset and its variations, we rely on
-`glyf` + `gvar` Additional transformation values (scale, rotation, etc.) and
+`glyf` + `gvar`. Additional transformation values (scale, rotation, etc.) and
 its variations will be stored in `VarC`
 - The component design space location and its variations will also be stored in
 `VarC`
