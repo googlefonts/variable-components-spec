@@ -17,7 +17,7 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
 - [Format overview](#format-overview)
   - [The Component data structure](#the-component-data-structure)
     - [Transformation](#transformation)
-    - [Design space location](#design-space-location)
+    - [Designspace location](#designspace-location)
 - [How to process VarC data?](#how-to-process-varc-data)
 - [Format details](#format-details)
   - [Notes on precision](#notes-on-precision)
@@ -40,12 +40,12 @@ customize the appearance of components in the composite glyph.
 With OpenType 1.8, “variations” were added to the format, allowing for live
 interpolation between (say) regular and bold. These variations are global to the
 font: they are controlled by the user for the font as a whole. Such a font is no
-longer static, and the end user can navigate a _design space_ along dimensions
-(axes) defined by the font. The chosen variation is defined by the _design space
-location_, as a set of coordinates in the _design space_.
+longer static, and the end user can navigate a _designspace_ along dimensions
+(axes) defined by the font. The chosen variation is defined by the _designspace
+location_, as a set of coordinates in the _designspace_.
 
 “Variable Components” add the possibility to place a _variable glyph_ in a
-composite glyph, specifying the interpolation settings (the _design space
+composite glyph, specifying the interpolation settings (the _designspace
 location_) for that single occurrence. A single glyph may define its own _design
 space_, for composites to use as they see fit.
 
@@ -82,15 +82,15 @@ The proposal presented here was informed by the following priorities:
 - Make it easy for existing implementations to adapt
 - Store the Variable Component data in a compact form, to maximize space saving
 
-The first thing we need to pin down is how to do “local design spaces”. How does
+The first thing we need to pin down is how to do “local designspaces”. How does
 a glyph define its own designspace, to be used by composites?
 
 Here are some of the insights that led to the current design, in order:
 
-1. The composite is in full control of the design space location of the
+1. The composite is in full control of the designspace location of the
 component
-1. The _global_ design space location can affect the composite glyph, but it
-_does not need to affect_ the design space location of the base glyph
+1. The _global_ designspace location can affect the composite glyph, but it
+_does not need to affect_ the designspace location of the base glyph
 _directly_.
 1. A “base glyph” is just a regular `glyf`-based glyph, using `gvar` for
 variations, but it needs to be able to use axes that are not user-controllable.
@@ -109,7 +109,7 @@ have a significant impact on the file size. So: let’s not use more axes than
 strictly necessary.
 1. A Variable Component axis is not exposed to the user, and there is no need
 for “user coordinates”: the composite will only ever use “normalized
-coordinates” to specify a design space location. Also: we don't consider
+coordinates” to specify a designspace location. Also: we don't consider
 `avar`-like functionality to be necessary here.
 1. A Variable Component axis is internally always referenced by its axis index.
 The “axis tag” is completely irrelevant. (Axis tags are only used for user
@@ -121,8 +121,8 @@ longer attached to a function that is meaningful for the end user, or any
 specific meaning at all. For example, base glyph X may use axis #2 to implement
 “stretching”, but base glyph Y may use the same axis #2 to implement “bending”.
 The _meaning_ of an axis is completely local to the base glyph. Each component
-specifies the local design space location for its base glyph.
-1. Concluding, the _local design space_ for a base glyph does not need any more
+specifies the local designspace location for its base glyph.
+1. Concluding, the _local designspace_ for a base glyph does not need any more
 information than what we already have: it is completely defined by its
 variations’ locations in the `gvar` table.
 
@@ -137,8 +137,8 @@ A Variable Component reference needs the following information:
 
 - The base glyph ID. This specifies which glyph we are referencing.
 - A transformation (offset, scale, rotation, etc.)
-- A design space location
-- Variations for the transformation and the design space location, so the
+- A designspace location
+- Variations for the transformation and the designspace location, so the
 composite itself can become a variable glyph (whether as a “normal” glyph, or
 referenced as a Variable Component by another glyph)
 
@@ -161,7 +161,7 @@ Summarizing:
 - For the base glyph ID, the component offset and its variations, we rely on
 `glyf` + `gvar`. Additional transformation values (scale, rotation, etc.) and
 its variations will be stored in `VarC`
-- The component design space location and its variations will also be stored in
+- The component designspace location and its variations will also be stored in
 `VarC`
 
 Base glyphs are totally ordinary `glyf` + `gvar` glyphs, but can also be
@@ -245,9 +245,9 @@ side as the center.
 really about how the component moves when transitioning from one composite
 master to another. _(This should be illustrated visually)_
 
-### Design space location
+### Designspace location
 
-The design space location for components is stored as an array of axis indices
+The designspace location for components is stored as an array of axis indices
 and a matching array of axis values.
 
 The VarStore subtable is used to store variation deltas. It uses 16 bit integer
