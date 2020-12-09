@@ -386,10 +386,10 @@ the component needs. It avoids having a small maximum (as with Fixed2Dot14,
 which goes from -2 to +2) while sticking to 16 bits precision. The number of
 precision bits is 16 - number-of-integer-bits.
 
-**`Coord16`**: this is in int16 value used to represent a coordinate in a designspace
-location. This is currently defined as a Fixed2Dot14, but **this has to change
-because even though the -2..+2 range is enough for master values, delta values
-can easily exceed this limit.**
+**`Coord16`**: this is in int16 value used to represent a coordinate in a
+designspace location. This is defined as a Fixed4Dot12. Master values are
+expected to be between -1.0 and +1.0, but delta values may be outside that
+range.
 
 **`VarIdx`** array: this is a compactly stored array with `VarIdx` values, which
 reference items in the VarStore. A VarIdx value is normally 32 bit, using 16
