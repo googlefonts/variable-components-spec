@@ -23,6 +23,7 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
   - [Field formats](#field-formats)
 - [New axis flag for the vartable](#new-axis-flag-for-the-fvar-table)
 - [Notes on non-linear interpolation](#notes-on-non-linear-interpolation)
+- [Prototype Implementation](#prototype-Implementation)
 
 # What are Variable Components?
 
@@ -431,3 +432,12 @@ transformation on the outlines of the glyph, if it is not a composite.
 
 \*) By giving multiple fvar axes the same axis tags, many implementations allow
 multiple axes to be controlled from a single value.
+
+# Prototype Implementation
+
+There is some prototype-level code that implements readers and writers for the
+`VarC` table as part of this repository:
+https://github.com/BlackFoundryCom/rcjk-tools
+
+It relates to Black[Foundry]'s Robo-CJK RoboFont extension, which heavily uses
+variable components: https://github.com/BlackFoundryCom/robo-cjk
