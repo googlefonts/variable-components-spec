@@ -171,7 +171,7 @@ recursive nature of TrueType components.
 
 High level structure of the `VarC` table:
 
-| name | ... |
+| name | description |
 |-|-|
 | Version | version field, initially `0x00010000` |
 | numGlyphs | the number of glyphs |
