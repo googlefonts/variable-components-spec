@@ -370,6 +370,13 @@ In other cases (`Angle16` and `Coord16`) we simply chose a larger range than
 required for the master values, so there is some wiggle room for delta values
 that are outside of the master value range.
 
+Delta values are stored in the `VarStore` subtable, and they use the same
+formats as their corresponding master values.
+
+We observe that https://github.com/googlefonts/colr-gradients-spec/ adds 32-bit
+value support to the VarStore format. `VarC` table could benefit from that as
+well, at the expense of compactness.
+
 ## Field formats
 
 **`Angle16`**: this is an int16 value used to represent an angle. To scale an
