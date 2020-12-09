@@ -19,7 +19,7 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
     - [Transformation](#transformation)
 - [How to process VarC data?](#how-to-process-varc-data)
 - [Format details](#format-details)
-- [New axis flag for `fvar` table](#new-axis-flag-for-fvar-table)
+- [New axis flag for the vartable](#new-axis-flag-for-the-fvar-table)
 - [Notes on non-linear interpolation](#notes-on-non-linear-interpolation)
 
 # What are Variable Components?
@@ -378,7 +378,7 @@ field. This is identical to the `entryFormat` field of the
 [`DeltaSetIndexMap` subtable](https://docs.microsoft.com/en-us/typography/opentype/spec/hvar#table-formats)
 from the `HVAR` table.
 
-# New axis flag for `fvar` table
+# New axis flag for the fvar table
 
 The axes used to implement local designspaces for components should never be
 exposed to users, and should me marked as such with a new axis flag:
