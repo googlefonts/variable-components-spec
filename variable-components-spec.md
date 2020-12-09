@@ -377,6 +377,18 @@ field. This is identical to the `entryFormat` field of the
 [`DeltaSetIndexMap` subtable](https://docs.microsoft.com/en-us/typography/opentype/spec/hvar#table-formats)
 from the `HVAR` table.
 
+# New axis flag for `fvar` table
+
+The axes used to implement local designspaces for components should never be
+exposed to users, and should me marked as such with a new axis flag:
+
+| Mask | Name | Description |
+|-|-|-|
+| 0x0002 | LOCAL_AXIS | The axis is only used internally, and should not be exposed in user interfaces. Used to implement local designspaces for Variable Components. |
+
+This is a backwards-compatible change, and therefore the `fvar` table version
+does not need to be updated.
+
 # Notes on non-linear interpolation
 
 Because the (local) axes for VariableComponents are controlled by global (user)
