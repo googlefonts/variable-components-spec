@@ -109,7 +109,7 @@ strictly necessary.
 1. A Variable Component axis is not exposed to the user, and there is no need
 for “user coordinates”: the composite will only ever use “normalized
 coordinates” to specify a design space location. Also: we don't consider
-`avar`-like functionality necessary here.
+`avar`-like functionality to be necessary here.
 1. A Variable Component axis is internally always referenced by its axis index.
 The “axis tag” is completely irrelevant. (Axis tags are only used for user
 interaction, and are not referenced anywhere in the font outside of the `fvar`
