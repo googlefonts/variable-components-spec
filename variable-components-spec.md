@@ -284,7 +284,8 @@ _This may be opened for discussion: it can be useful to pass down the global
 designspace coordinates down to base glyphs (unless overridden), but then we
 need to distinguish between global `fvar` axes and local (anonymous) `fvar`
 axes, due to the reusable nature of local axes in this design. To allow this, we
-need a new `fvar` axis flag in addition to the "hidden" flag._
+need a new `fvar` axis flag in addition to the "hidden" flag. Please discuss
+here: https://github.com/BlackFoundryCom/variable-components-spec/issues/1_
 
 # Format details
 
