@@ -17,6 +17,7 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
 - [Format overview](#format-overview)
   - [The Component data structure](#the-component-data-structure)
     - [Transformation](#transformation)
+    - [Design space location](#design-space-location)
 - [How to process VarC data?](#how-to-process-varc-data)
 - [Format details](#format-details)
   - [Notes on precision](#notes-on-precision)
@@ -243,6 +244,8 @@ side as the center.
 - This all wouldn’t make a difference if it wasn’t for interpolation: it’s
 really about how the component moves when transitioning from one composite
 master to another. _(This should be illustrated visually)_
+
+### Design space location
 
 The design space location for components is stored as an array of axis indices
 and a matching array of axis values.
