@@ -384,7 +384,7 @@ exposed to users, and should me marked as such with a new axis flag:
 
 | Mask | Name | Description |
 |-|-|-|
-| 0x0002 | LOCAL_AXIS | The axis is only used internally, and should not be exposed in user interfaces. Used to implement local designspaces for Variable Components. |
+| 0x0002 | INTERNAL_AXIS | The axis is only used internally, and should not be exposed in user interfaces. Used to implement local designspaces for Variable Components. |
 
 This is a backwards-compatible change, and therefore the `fvar` table version
 does not need to be updated.
