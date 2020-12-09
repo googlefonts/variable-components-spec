@@ -362,6 +362,14 @@ to choose the range of the fields carefully, as the range of _delta values_ may
 exceed the range of master values by a factor related to the number of axes
 involved.
 
+In one case (component scale factors) we chose to use a three-bit field to
+specify the number of integer bits to be used for scale factors. This gives us
+a flexible range that can be made to fit the required range.
+
+In other cases (`Angle16` and `Coord16`) we simply chose a larger range than
+required for the master values, so there is some wiggle room for delta values
+that are outside of the master value range.
+
 ## Field formats
 
 **`Angle16`**: this is an int16 value used to represent an angle between -360 and +360
