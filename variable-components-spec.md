@@ -289,6 +289,9 @@ axes, due to the reusable nature of local axes in this design. To allow this, we
 need a new `fvar` axis flag in addition to the "hidden" flag. Please discuss
 here: https://github.com/BlackFoundryCom/variable-components-spec/issues/1_
 
+Local designspace coordinates need to be clamped, but it's not clear yet how:
+https://github.com/BlackFoundryCom/variable-components-spec/issues/3
+
 # Format details
 
 | type | name | value |
