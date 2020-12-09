@@ -349,7 +349,7 @@ Component flags:
 | 9 | have SkewY |
 | 10 | have TCenterX |
 | 11 | have TCenterY |
-| 12 | If ScaleY is missing: take value from ScaleX (? to be detailed) |
+| 12 | If ScaleY is missing: take value from ScaleX (to be discussed here: https://github.com/BlackFoundryCom/variable-components-spec/issues/2) |
 | 13 | (reserved, set to 0) |
 | 14 | (reserved, set to 0) |
 | 15 | (reserved, set to 0) |
