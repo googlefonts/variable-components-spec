@@ -19,6 +19,7 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
     - [Transformation](#transformation)
 - [How to process VarC data?](#how-to-process-varc-data)
 - [Format details](#format-details)
+- [New axis flag for `fvar` table](#new-axis-flag-for-fvar-table)
 - [Notes on non-linear interpolation](#notes-on-non-linear-interpolation)
 
 # What are Variable Components?
