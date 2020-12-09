@@ -411,7 +411,7 @@ from the `HVAR` table.
 # New axis flag for the fvar table
 
 The axes used to implement local designspaces for components should never be
-exposed to users, and should me marked as such with a new axis flag:
+exposed to users, and should be marked as such with a new axis flag:
 
 | Mask | Name | Description |
 |-|-|-|
