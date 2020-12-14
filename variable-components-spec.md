@@ -96,8 +96,8 @@ a glyph define its own designspace, to be used by composites?
 
 Here are some of the insights that led to the current design, in order:
 
-1. The composite is in full control of the designspace location of the
-component
+1. A component has full control over the designspace location of the
+component's base glyph. It can even override a global axis value.
 1. The _global_ designspace location can affect the composite glyph, but to
 achieve the design goal of this propasal, it _does not need to affect_ the
 designspace location of the base glyph _directly_. (This is still open for
