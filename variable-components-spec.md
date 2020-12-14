@@ -25,6 +25,7 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
   - [Field formats](#field-formats)
 - [New axis flag for the vartable](#new-axis-flag-for-the-fvar-table)
 - [Notes on non-linear interpolation](#notes-on-non-linear-interpolation)
+- [Comparison to the COLRv1 proposal](#comparison-to-the-colrv1-proposal)
 - [Prototype Implementation](#prototype-Implementation)
 
 # Terminology
@@ -445,6 +446,31 @@ transformation on the outlines of the glyph, if it is not a composite.
 
 \*) By giving multiple fvar axes the same axis tags, many implementations allow
 multiple axes to be controlled from a single value.
+
+# Comparison to the COLRv1 proposal
+
+There is a proposal which adds a much enhanced version of the COLR table:
+https://github.com/googlefonts/colr-gradients-spec/
+
+There happens to be some overlap between the Variable Components proposal and
+the COLRv1 proposal.
+
+A COLR glyph can be seen as a composite glyph, but with paint properties
+associated with each component. COLRv1 enhances this idea by adding
+transformations to the "components", in a way that is conceptually very similar
+to the Variable Components proposal, but is different in every detail.
+
+From a bird’s eye perspective, both proposals implement “doing components
+better”, but for different use cases.
+
+We see two ways of addressing this:
+1. Attempt to bring the data structures for component transformations together,
+so they can be shared in the spec.
+2. Merge the two proposals completely, by adding “local designspaces” to COLRv2.
+
+More discussion is needed:
+- https://github.com/BlackFoundryCom/variable-components-spec/issues/4
+- https://github.com/googlefonts/colr-gradients-spec/issues/88
 
 # Prototype Implementation
 
