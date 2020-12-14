@@ -99,7 +99,7 @@ Here are some of the insights that led to the current design, in order:
 1. The composite is in full control of the designspace location of the
 component
 1. The _global_ designspace location can affect the composite glyph, but to
-achieve to design gloals of this propasal, it _does not need to affect_ the
+achieve to design goal of this propasal, it _does not need to affect_ the
 designspace location of the base glyph _directly_. (This is still open for
 discussion, see [#1](https://github.com/BlackFoundryCom/variable-components-spec/issues/1))
 1. A “base glyph” is just a regular `glyf`-based glyph, using `gvar` for
