@@ -30,7 +30,7 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
 
 # Terminology
 
-- _designspace_: equivalent to the term "variation space"
+- _designspace_: equivalent to the term “variation space”
 - _designspace location_: a specific location in a designspace
 - _composite_: a glyph that is composed of references to other glyphs
 - _component_: a reference to another glyph
@@ -301,7 +301,7 @@ _This may be opened for discussion: it can be useful to pass down the global
 designspace coordinates down to base glyphs (unless overridden), but then we
 need to distinguish between global `fvar` axes and local (anonymous) `fvar`
 axes, due to the reusable nature of local axes in this design. To allow this, we
-need a new `fvar` axis flag in addition to the "hidden" flag. Please discuss
+need a new `fvar` axis flag in addition to the “hidden” flag. Please discuss
 here: https://github.com/BlackFoundryCom/variable-components-spec/issues/1_
 
 Local designspace coordinates need to be clamped, but it's not clear yet how:
@@ -457,7 +457,7 @@ the COLRv1 proposal.
 
 A COLR glyph can be seen as a composite glyph, but with paint properties
 associated with each component. COLRv1 enhances this idea by adding
-transformations to the "components", in a way that is conceptually very similar
+transformations to the “components”, in a way that is conceptually very similar
 to the Variable Components proposal, but is different in every detail.
 
 From a bird’s eye perspective, both proposals implement “doing components
