@@ -98,7 +98,7 @@ a glyph define its own designspace, to be used by composites?
 Here are some of the insights that led to the current design, in order:
 
 1. A component has full control over the designspace location of the
-component's base glyph. It can even override a global axis value.
+component’s base glyph. It can even override a global axis value.
 1. The _global_ designspace location can affect the composite glyph, but to
 achieve the design goal of this propasal, it _does not need to affect_ the
 designspace location of the base glyph _directly_. (This is still open for
@@ -120,7 +120,7 @@ have a significant impact on the file size. So: let’s not use more axes than
 strictly necessary.
 1. A Variable Component axis is not exposed to the user, and there is no need
 for “user coordinates”: the composite will only ever use “normalized
-coordinates” to specify a designspace location. Also: we don't consider
+coordinates” to specify a designspace location. Also: we don’t consider
 `avar`-like functionality to be necessary here.
 1. A Variable Component axis is internally always referenced by its axis index.
 The “axis tag” is completely irrelevant. (Axis tags are only used for user
@@ -280,9 +280,9 @@ Steps:
 - If the glyph is a composite and has an entry in the `VarC` table:
   - for each component:
     - Using the input designspace location, interpolate the transformation
-    fields and the component's designspace location
+    fields and the component’s designspace location
     - Retrieve the outline using this algorithm recursively, but using the
-    component's designspace location and glyph ID as inputs instead.
+    component’s designspace location and glyph ID as inputs instead.
     - Transform the outline according to the transformation
 - Else:
   - Proceed as usual, but apply the entire algorithm recursively, allowing for
@@ -292,7 +292,7 @@ To clarify: Variable Components completely determine the designspace location
 for the base glyph. Any axis not specified by a Variable Component has to be
 interpreted as set to its *default*, regardless of the global designspace
 location. In other words, Variable Components do not implicitly pass the global
-designspace location down to the base glyphs. (It _can't_ pass down local
+designspace location down to the base glyphs. (It _can’t_ pass down local
 designspace coordinates, as local designspace may reuse axis IDs for different
 purposes. Axis X may do something completely different for glyph A than for
 glyph B.
@@ -304,7 +304,7 @@ axes, due to the reusable nature of local axes in this design. To allow this, we
 need a new `fvar` axis flag in addition to the “hidden” flag. Please discuss
 here: https://github.com/BlackFoundryCom/variable-components-spec/issues/1_
 
-Local designspace coordinates need to be clamped, but it's not clear yet how:
+Local designspace coordinates need to be clamped, but it’s not clear yet how:
 https://github.com/BlackFoundryCom/variable-components-spec/issues/3
 
 # Format details
@@ -485,5 +485,5 @@ There is some prototype-level code that implements readers and writers for the
 `VarC` table as part of this repository:
 https://github.com/BlackFoundryCom/rcjk-tools
 
-It relates to Black[Foundry]'s Robo-CJK RoboFont extension, which heavily uses
+It relates to Black[Foundry]’s Robo-CJK RoboFont extension, which heavily uses
 variable components: https://github.com/BlackFoundryCom/robo-cjk
