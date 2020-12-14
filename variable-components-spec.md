@@ -463,12 +463,19 @@ to the Variable Components proposal, but is different in every detail.
 From a bird’s eye perspective, both proposals implement “doing components
 better”, but for different use cases.
 
-We see two ways of addressing this:
+We currently see two ways of addressing this:
 1. Attempt to bring the data structures for component transformations together,
 so they can be shared in the spec.
-2. Merge the two proposals completely, by adding “local designspaces” to COLRv2.
+2. Merge the two proposals completely, by adding “local designspaces” to COLRv1,
+and promote the idea that COLRv1 is about “better components” first, and about
+color second.
 
-More discussion is needed:
+COLRv1 effectively adds a new glyph type, one that overrides `glyf` and
+`CFF`/`CFF2` (but uses those as outline sources), whereas the Variable
+Components proposal builds on the composite/component structure of the `glyf`
+table (and is not compatible with `CFF`/`CFF2`).
+
+More research and discussion is needed:
 - https://github.com/BlackFoundryCom/variable-components-spec/issues/4
 - https://github.com/googlefonts/colr-gradients-spec/issues/88
 
