@@ -10,6 +10,7 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
 
 ## Table of Contents
 
+- [Terminology](#terminology)
 - [What are Variable Components?](#what-are-variable-components)
   - [Use cases](#use-cases)
 - [Proposal overview](#proposal-overview)
@@ -25,6 +26,14 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
 - [New axis flag for the vartable](#new-axis-flag-for-the-fvar-table)
 - [Notes on non-linear interpolation](#notes-on-non-linear-interpolation)
 - [Prototype Implementation](#prototype-Implementation)
+
+# Terminology
+
+- _designspace_: equivalent to the term "variation space"
+- _designspace location_: a specific location in a designspace
+- _composite_: a glyph that is composed of references to other glyphs
+- _component_: a reference to another glyph
+- _base glyph_: the glyph referenced by a component
 
 # What are Variable Components?
 
