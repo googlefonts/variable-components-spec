@@ -290,7 +290,7 @@ Steps:
 
 Or in pseudo code:
 
-    func getGlyphOutline(gid, location):
+    def getGlyphOutline(gid, location):
         if gid is a composite:
             for each component:
                 if gid in VarC:
