@@ -230,13 +230,15 @@ This is separate from the component offset as stored in the `glyf` table.
 Details of how to build a transformation matrix, as pseudo-Python/fontTools
 code, where `(X, Y)` is the component offset from the `glyf` table:
 
-    # Using fontTools.misc.transform.Transform
-    t = Transform()  # Identity
-    t = t.translate(X + TCenterX, Y + TCenterY)
-    t = t.rotate(Rotation)
-    t = t.scale(ScaleX, ScaleY)
-    t = t.skew(SkewX, SkewY)
-    t = t.translate(-TCenterX, -TCenterX)
+```python
+# Using fontTools.misc.transform.Transform
+t = Transform()  # Identity
+t = t.translate(X + TCenterX, Y + TCenterY)
+t = t.rotate(Rotation)
+t = t.scale(ScaleX, ScaleY)
+t = t.skew(SkewX, SkewY)
+t = t.translate(-TCenterX, -TCenterX)
+```
 
 The transformation fields are stored as individual fields, and are interpolated
 as individual fields. If the client needs a transformation matrix, then this
