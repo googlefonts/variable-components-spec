@@ -290,21 +290,23 @@ Steps:
 
 Or in pseudo code:
 
-    def getGlyphOutline(gid, location):
-        if gid is a composite:
-            for each component:
-                if gid in VarC:
-                    compoTransform = instantiateTransform(location)
-                    compoLocation = instantiateLocalLocation(location)
-                else:
-                    offset = instantiateOffset(location)
-                    compoTransform = getComponentTransform(component, offset)
-                    compoLocation = location  # global
-                outline = getGlyphOutline(compoGID, compoLocation)
-                outline = transformOutline(outline, compoTransform)
-        else:
-            outline = instantiateGlyfGvarGlyph(gid, location)
-        return outline
+```python
+def getGlyphOutline(gid, location):
+    if gid is a composite:
+        for each component:
+            if gid in VarC:
+                compoTransform = instantiateTransform(location)
+                compoLocation = instantiateLocalLocation(location)
+            else:
+                offset = instantiateOffset(location)
+                compoTransform = getComponentTransform(component, offset)
+                compoLocation = location  # global
+            outline = getGlyphOutline(compoGID, compoLocation)
+            outline = transformOutline(outline, compoTransform)
+    else:
+        outline = instantiateGlyfGvarGlyph(gid, location)
+    return outline
+```
 
 To clarify: Variable Components completely determine the designspace location
 for the base glyph. Any axis not specified by a Variable Component has to be
