@@ -27,6 +27,7 @@ A proposal for an add-on to OpenType 1.8 by Black[Foundry]
 - [Notes on non-linear interpolation](#notes-on-non-linear-interpolation)
 - [Comparison to the COLRv1 proposal](#comparison-to-the-colrv1-proposal)
 - [Prototype Implementation](#prototype-Implementation)
+- [Prior Art](#prior-art)
 
 # Terminology
 
@@ -509,3 +510,9 @@ https://github.com/BlackFoundryCom/rcjk-tools
 
 It relates to Black[Foundry]’s Robo-CJK RoboFont extension, which heavily uses
 variable components: https://github.com/BlackFoundryCom/robo-cjk
+
+# Prior Art
+
+In March 2020 we published the [RoboCJK Deep Components Proposal](https://github.com/BlackFoundryCom/robo-cjk/blob/master/ProposalForDeepComponent.md).
+
+In September 2018, Microsoft published an [XVAR Proposal](https://github.com/microsoft/OpenType-XVAR-proposal).
