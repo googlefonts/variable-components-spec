@@ -2,7 +2,7 @@
 
 A proposal for an add-on to OpenType 1.8 by Black[Foundry]
 
-*(Work in progress!)*
+_Superceded by [github.com/harfbuzz/boring-expansion-spec](https://github.com/harfbuzz/boring-expansion-spec) in 2023_
 
 ### Authors:
 * Just van Rossum ([@justvanrossum](https://github.com/justvanrossum))
